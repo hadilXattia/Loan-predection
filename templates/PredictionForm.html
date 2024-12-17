@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <title>Loan Prediction</title>
+</head>
+<body>
+    <header class="text-gray-400 bg-gray-900 body-font">
+        <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+          <a class="flex title-font font-medium items-center text-white mb-4 md:mb-0">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full" viewBox="0 0 24 24">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+            </svg>
+            <span class="ml-3 text-xl">Loan Prediction</span>
+          </a>
+          <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
+            <a class="mr-5 hover:text-white" href="{{ url_for('home') }}">Home</a>
+
+            <a class="mr-5 hover:text-white" href="{{ url_for('About') }}">About</a>
+            <a class="mr-5 hover:text-white" href="{{ url_for('PredictionForm') }}">Predict</a>
+          </nav>
+     
+        </div>
+      </header> 
+    
+      
+    
+      <form class="form-horizontal" action="/predict/" method="post">
+        <section class="text-gray-400 bg-gray-900 body-font">
+            <div class="container px-5 py-24 mx-auto">
+                <div class="flex flex-col text-center w-full mb-12">
+                    <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-white">Now, it's your predictor</h1>
+                    <p class="lg:w-2/3 mx-auto leading-relaxed text-base">Now, Use the Predictor!</p>
+                </div>
+                <!-- Form Fields -->
+                <div class="flex flex-col mx-auto lg:w-2/3 w-full space-y-6">
+                    <div>
+                        <label for="Gender" class="leading-7 text-sm text-gray-400">Gender</label>
+                        <select id="Gender" name="Gender" class="w-full bg-gray-800 bg-opacity-40 rounded border border-gray-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-900 text-base outline-none text-gray-100 py-2 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                            <option value="">-Choisir-</option>
+                            <option value="1">Female</option>
+                            <option value="0">Male</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label for="Married" class="leading-7 text-sm text-gray-400">Married</label>
+                        <select id="Married" name="Married" class="w-full bg-gray-800 bg-opacity-40 rounded border border-gray-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-900 text-base outline-none text-gray-100 py-2 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                            <option value="">-Choisir-</option>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="Education" class="leading-7 text-sm text-gray-400">Education</label>
+                        <select id="Education" name="Education" class="w-full bg-gray-800 bg-opacity-40 rounded border border-gray-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-900 text-base outline-none text-gray-100 py-2 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                            <option value="">-Choisir-</option>
+                            <option value="1">Graduate</option>
+                            <option value="0">Not Graduate</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="Self_Employed" class="leading-7 text-sm text-gray-400">Self-Employed</label>
+                        <select id="Self_Employed" name="Self_Employed" class="w-full bg-gray-800 bg-opacity-40 rounded border border-gray-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-900 text-base outline-none text-gray-100 py-2 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                            <option value="">-Choisir-</option>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="ApplicantIncome" class="leading-7 text-sm text-gray-400">Applicant Income</label>
+                        <input type="text" id="ApplicantIncome" name="ApplicantIncome" class="w-full bg-gray-800 bg-opacity-40 rounded border border-gray-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-900 text-base outline-none text-gray-100 py-2 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                    </div>
+                    <div>
+                        <label for="CoapplicantIncome" class="leading-7 text-sm text-gray-400">Co-applicant Income</label>
+                        <input type="text" id="CoapplicantIncome" name="CoapplicantIncome" class="w-full bg-gray-800 bg-opacity-40 rounded border border-gray-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-900 text-base outline-none text-gray-100 py-2 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                    </div>
+                    <div>
+                        <label for="LoanAmount" class="leading-7 text-sm text-gray-400">Loan Amount</label>
+                        <input type="text" id="LoanAmount" name="LoanAmount" class="w-full bg-gray-800 bg-opacity-40 rounded border border-gray-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-900 text-base outline-none text-gray-100 py-2 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                    </div>
+                    <div>
+                        <label for="Loan_Amount_Term" class="leading-7 text-sm text-gray-400">Loan Amount Term</label>
+                        <input type="text" id="Loan_Amount_Term" name="Loan_Amount_Term" class="w-full bg-gray-800 bg-opacity-40 rounded border border-gray-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-900 text-base outline-none text-gray-100 py-2 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                    </div>
+                
+                    <div>
+                        <label for="Credit_History" class="leading-7 text-sm text-gray-400">Credit History</label>
+                        <select id="Credit_History" name="Credit_History" class="w-full bg-gray-800 bg-opacity-40 rounded border border-gray-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-900 text-base outline-none text-gray-100 py-2 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                            <option value="">-Choisir-</option>
+                            <option value="0">Didn't have any credit in the past</option>
+                            <option value="1">Had other credit in the past</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="Property_Area" class="leading-7 text-sm text-gray-400">Property Area</label>
+                        <select id="Property_Area" name="Property_Area" class="w-full bg-gray-800 bg-opacity-40 rounded border border-gray-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-900 text-base outline-none text-gray-100 py-2 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                            <option value="">-Choisir-</option>
+                            <option value="2">Urban</option>
+                            <option value="1">Semiurban</option>
+                            <option value="0">Rural</option>
+                        </select>
+                    </div>
+                    <div class="text-center mt-6">
+                        <button type="submit" class="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Predict</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </form>
+        
+</body>
+</html>
