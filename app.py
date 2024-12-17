@@ -1,40 +1,49 @@
-from logging import debug
-from flask import Flask, render_template, request 
-import utils  
-from utils import preprocessdata 
+import streamlit as st
+import utils
+from utils import preprocessdata
 
-app = Flask(__name__) 
+# Replace Flask routes with Streamlit UI elements
 
-@app.route('/about', endpoint='About')
-def another_page():
-    return render_template('About.html')
-@app.route('/PredictionForm', endpoint='PredictionForm')
-def another_page():
-    return render_template('PredictionForm.html')
+def home():
+    st.title("Loan Prediction")
+    st.write("Welcome to the Loan Prediction App!")
 
-@app.route('/') 
-def home(): 
-    return render_template('index.html') 
-@app.route('/predict/', methods=['GET', 'POST'])
+def about():
+    st.title("About")
+    st.write("This is an app to predict loan eligibility based on various parameters.")
 
-def predict():  
-    if request.method == 'POST': 
-        Gender = request.form.get('Gender')
-        Married = request.form.get('Married')
-        Education = request.form.get('Education')
-        Self_Employed = request.form.get('Self_Employed')  
-        ApplicantIncome = request.form.get('ApplicantIncome')  
-        CoapplicantIncome = request.form.get('CoapplicantIncome') 
-        LoanAmount = request.form.get('LoanAmount')   
-        Loan_Amount_Term = request.form.get('Loan_Amount_Term')   
-        Credit_History = request.form.get('Credit_History')   
-        Property_Area = request.form.get('Property_Area')  
+def prediction_form():
+    st.title("Prediction Form")
+    
+    # Input fields
+    Gender = st.selectbox("Gender", ["Male", "Female"])
+    Married = st.selectbox("Married", ["Yes", "No"])
+    Education = st.selectbox("Education", ["Graduate", "Not Graduate"])
+    Self_Employed = st.selectbox("Self Employed", ["Yes", "No"])
+    ApplicantIncome = st.number_input("Applicant Income", min_value=0)
+    CoapplicantIncome = st.number_input("Coapplicant Income", min_value=0)
+    LoanAmount = st.number_input("Loan Amount", min_value=0)
+    Loan_Amount_Term = st.selectbox("Loan Amount Term", [12, 24, 36, 48, 60])
+    Credit_History = st.selectbox("Credit History", ["Yes", "No"])
+    Property_Area = st.selectbox("Property Area", ["Urban", "Semiurban", "Rural"])
 
-    prediction = utils.preprocessdata(Gender, Married, Education, Self_Employed, ApplicantIncome,
-       CoapplicantIncome, LoanAmount, Loan_Amount_Term, Credit_History,
-       Property_Area)
+    # Prediction button
+    if st.button("Predict"):
+        prediction = utils.preprocessdata(Gender, Married, Education, Self_Employed, ApplicantIncome,
+                                          CoapplicantIncome, LoanAmount, Loan_Amount_Term, Credit_History,
+                                          Property_Area)
+        st.write(f"Prediction: {prediction}")
 
-    return render_template('predict.html', prediction=prediction) 
+# Mapping Streamlit pages
+PAGES = {
+    "Home": home,
+    "About": about,
+    "Prediction Form": prediction_form
+}
 
-if __name__ == '__main__': 
-    app.run(debug=False, port=6100) 
+# Sidebar for navigation
+st.sidebar.title("Navigation")
+selection = st.sidebar.radio("Go to", list(PAGES.keys()))
+
+# Call the selected page function
+PAGES[selection]()
