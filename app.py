@@ -30,4 +30,4 @@ def predict():
        Property_Area)
     return render_template('predict.html', prediction=prediction) 
 if __name__ == '__main__': 
-    app.run(debug=True) 
+  app.run(debug=False, use_reloader=False)
