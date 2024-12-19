@@ -1,53 +1,221 @@
-from logging import debug
-from flask import Flask, render_template, request
+import streamlit as st
 import utils
 from utils import preprocessdata
 
-app = Flask(__name__)
+
+# Function to display navbar
+def navbar():
+    menu = ["Home", "Prediction Form", "About"]
+    choice = st.sidebar.selectbox("Select Page", menu)
+    return choice
 
 
-@app.route("/about", endpoint="About")
-def another_page():
-    return render_template("About.html")
-
-
-@app.route("/PredictionForm", endpoint="PredictionForm")
-def another_page():
-    return render_template("PredictionForm.html")
-
-
-@app.route("/")
+# Home page
 def home():
-    return render_template("index.html")
+    st.markdown(
+        """ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <title>Loan Prediction</title>
+</head>
+<body>
+  
+      <section class="text-gray-400 bg-gray-900 body-font">
+        <div class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
+          <div class="lg:max-w-lg lg:w-full md:w-1/2 w-5/6 md:mb-0 mb-10">
+            <img class="object-cover object-center rounded" alt="hero" src="/static/Untitled design.png">
+          </div>
+          <div class="lg:flex-grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col md:items-start md:text-left items-center text-center">
+            <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">Loan Approval
+              <br class="hidden lg:inline-block">Prediction System 
+            </h1>
+            <p class="mb-8 leading-relaxed">Loan Approval Prediction System, Use this system to predict whether your loan will be Approved or not.Give your feedback for the if you encounter any error. </p>
+       
+          </div>
+        </div>
+      </section>
+      
+      <section class="text-gray-400 body-font bg-gray-900">
+        <div class="container px-5 py-24 mx-auto">
+          <div class="flex flex-wrap w-full mb-20 flex-col items-center text-center">
+            <h1 class="sm:text-3xl text-2xl font-medium title-font mb-2 text-white">Features</h1>
+          </div>
+          <div class="flex flex-wrap -m-4">
+            <div class="xl:w-1/3 md:w-1/2 p-4">
+              <div class="border border-gray-700 border-opacity-75 p-6 rounded-lg">
+                <div class="w-10 h-10 inline-flex items-center justify-center rounded-full bg-gray-800 text-indigo-400 mb-4">
+                  <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-6 h-6" viewBox="0 0 24 24">
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                  </svg>
+                </div>
+                <h2 class="text-lg text-white font-medium title-font mb-2">Easy to use</h2>
+                <p class="leading-relaxed text-base">Easy to use tool, simply put some features and get to know whether you'll get an Approval or not.</p>
+              </div>
+            </div>
+            <div class="xl:w-1/3 md:w-1/2 p-4">
+              <div class="border border-gray-700 border-opacity-75 p-6 rounded-lg">
+                <div class="w-10 h-10 inline-flex items-center justify-center rounded-full bg-gray-800 text-indigo-400 mb-4">
+                  <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-6 h-6" viewBox="0 0 24 24">
+                    <circle cx="6" cy="6" r="3"></circle>
+                    <circle cx="6" cy="18" r="3"></circle>
+                    <path d="M20 4L8.12 15.88M14.47 14.48L20 20M8.12 8.12L12 12"></path>
+                  </svg>
+                </div>
+                <h2 class="text-lg text-white font-medium title-font mb-2">Only Numerical</h2>
+                <p class="leading-relaxed text-base">Put only Numerical in the features</p>
+              </div>
+            </div>
+            <div class="xl:w-1/3 md:w-1/2 p-4">
+              <div class="border border-gray-700 border-opacity-75 p-6 rounded-lg">
+                <div class="w-10 h-10 inline-flex items-center justify-center rounded-full bg-gray-800 text-indigo-400 mb-4">
+                  <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-6 h-6" viewBox="0 0 24 24">
+                    <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                  </svg>
+                </div>
+                <h2 class="text-lg text-white font-medium title-font mb-2">Accuracy</h2>
+                <p class="leading-relaxed text-base">It also has good Accuracy that makes good prediction using low error.</p>
+              </div>
+            </div>
 
+      
+      </section> 
 
-@app.route("/predict/", methods=["GET", "POST"])
-def predict():
-    if request.method == "POST":
-        Gender = request.form.get("Gender")
-        Married = request.form.get("Married")
-        Education = request.form.get("Education")
-        Self_Employed = request.form.get("Self_Employed")
-        ApplicantIncome = request.form.get("ApplicantIncome")
-        CoapplicantIncome = request.form.get("CoapplicantIncome")
-        LoanAmount = request.form.get("LoanAmount")
-        Loan_Amount_Term = request.form.get("Loan_Amount_Term")
-        Credit_History = request.form.get("Credit_History")
-        Property_Area = request.form.get("Property_Area")
-    prediction = utils.preprocessdata(
-        Gender,
-        Married,
-        Education,
-        Self_Employed,
-        ApplicantIncome,
-        CoapplicantIncome,
-        LoanAmount,
-        Loan_Amount_Term,
-        Credit_History,
-        Property_Area,
+        
+</body>
+</html> """,
+        unsafe_allow_html=True,
     )
-    return render_template("predict.html", prediction=prediction)
 
 
-if __name__ == "__main__":
-    app.run(debug=False)
+# About page (using custom HTML)
+def about():
+    st.markdown(
+        """
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+        <title>Loan Prediction</title>
+    </head>
+    <body>
+       
+        <section class="text-gray-400 bg-gray-900 body-font">
+            <div class="container mx-auto flex px-5 py-24 flex-col items-center">
+                <div class="lg:flex-grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col md:items-start md:text-center items-center text-center">
+                    <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">The 5 basic steps of the loan approval process</h1>
+                </div>
+            </div>
+        </section>
+        <section class="text-gray-400 bg-gray-900 body-font">
+            <div class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
+                <div class="lg:max-w-lg lg:w-full md:w-1/2 w-5/6 md:mb-0 mb-10">
+                    <img class="object-cover object-center rounded" alt="hero" src="/static/Untitled design.png">
+                </div>
+                <div class="lg:flex-grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col md:items-start md:text-left items-center text-center">
+                    <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">Step 1: Gathering and Submitting Application & Required Documentations</h1>
+                    <p class="mb-8 leading-relaxed mr-10 text-justify">
+                        The first step in obtaining any loan is to complete an application and submit the required documents. Required documents will vary based on the type of loan...
+                    </p>
+                </div>
+            </div>
+        </section>
+        <section class="text-gray-400 bg-gray-900 body-font">
+            <div class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
+                <div class="lg:max-w-lg lg:w-full md:w-1/2 w-5/6 md:mb-0 mb-10">
+                    <img class="object-cover object-center rounded" alt="hero" src="/static/Untitled design.png">
+                </div>
+                <div class="lg:flex-grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col md:items-start md:text-left items-center text-center">
+                    <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">Step 2: Loan Underwriting</h1>
+                    <p class="mb-8 leading-relaxed mr-10 text-justify">
+                        When a loan moves into underwriting, the analyst assigned to work on the request will typically evaluate the loan utilizing some form of the Five C’s of Credit...
+                    </p>
+                </div>
+            </div>
+        </section>
+        <section class="text-gray-400 bg-gray-900 body-font">
+            <div class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
+                <div class="lg:max-w-lg lg:w-full md:w-1/2 w-5/6 md:mb-0 mb-10">
+                    <img class="object-cover object-center rounded" alt="hero" src="/static/Untitled design.png">
+                </div>
+                <div class="lg:flex-grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col md:items-start md:text-left items-center text-center">
+                    <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">Step 3: Decision & Pre-Closing</h1>
+                    <p class="mb-8 leading-relaxed mr-10 text-justify">
+                        Once a decision is made on the loan request, a response is provided to the applicants as quickly as possible...
+                    </p>
+                </div>
+            </div>
+        </section>
+        <section class="text-gray-400 bg-gray-900 body-font">
+            <div class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
+                <div class="lg:max-w-lg lg:w-full md:w-1/2 w-5/6 md:mb-0 mb-10">
+                    <img class="object-cover object-center rounded" alt="hero" src="/static/Untitled design.png">
+                </div>
+                <div class="lg:flex-grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col md:items-start md:text-left items-center text-center">
+                    <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">Step 4: Closing</h1>
+                    <p class="mb-8 leading-relaxed mr-10 text-justify">
+                        Once you make it to this point, the anxiety and stress associated with waiting and gathering required items is essentially done...
+                    </p>
+                </div>
+            </div>
+        </section>
+        <section class="text-gray-400 bg-gray-900 body-font">
+            <div class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
+                <div class="lg:max-w-lg lg:w-full md:w-1/2 w-5/6 md:mb-0 mb-10">
+                    <img class="object-cover object-center rounded" alt="hero" src="/static/Untitled design.png">
+                </div>
+                <div class="lg:flex-grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col md:items-start md:text-left items-center text-center">
+                    <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">Step 5: Post Closing</h1>
+                    <p class="mb-8 leading-relaxed mr-10 text-justify">
+                        Finally, the loan transaction is typically wrapped up and welcome information will be sent...
+                    </p>
+                </div>
+            </div>
+        </section>
+    </body>
+    </html>
+    """,
+        unsafe_allow_html=True,
+    )
+
+
+# Prediction form page
+def prediction_form():
+    st.title("Loan Prediction Form")
+
+    # Input fields
+    Gender = st.selectbox("Gender", ["Male", "Female"])
+    Married = st.selectbox("Marital Status", ["Married", "Single", "Divorced"])
+    Education = st.selectbox("Education", ["Graduate", "Not Graduate"])
+    Self_Employed = st.selectbox("Self Employed", ["Yes", "No"])
+    ApplicantIncome = st.number_input("Applicant Income", min_value=0)
+    CoapplicantIncome = st.number_input("Coapplicant Income", min_value=0)
+    LoanAmount = st.number_input("Loan Amount", min_value=0)
+    Loan_Amount_Term = st.number_input("Loan Amount Term (in months)", min_value=0)
+    Credit_History = st.selectbox(
+        "Credit History", ["1.0", "0.0"]
+    )  # Assuming binary credit history
+    Property_Area = st.selectbox("Property Area", ["Urban", "Semiurban", "Rural"])
+
+    # Prediction button
+    if st.button("Predict"):
+        prediction = preprocessdata(
+            Gender,
+            Married,
+            Education,
+            Self_Employed,
+            ApplicantIncome,
+            CoapplicantIncome,
+            LoanAmount,
+            Loan_Amount_Term,
+            Credit_History,
+            Property_Area,
+        )
+        st.write
