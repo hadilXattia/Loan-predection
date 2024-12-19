@@ -1,23 +1,53 @@
-import streamlit as st
-import os
+from logging import debug
+from flask import Flask, render_template, request
+import utils
+from utils import preprocessdata
 
+app = Flask(__name__)
+
+
+@app.route("/about", endpoint="About")
+def another_page():
+    return render_template("About.html")
+
+
+@app.route("/PredictionForm", endpoint="PredictionForm")
+def another_page():
+    return render_template("PredictionForm.html")
+
+
+@app.route("/")
 def home():
-    # Load the 'index.html' from the 'templates' folder
-    with open(os.path.join("templates", "index.html"), "r") as file:
-        home_html = file.read()
-    st.markdown(home_html, unsafe_allow_html=True)
+    return render_template("index.html")
 
-def about():
-    # Load the 'About.html' from the 'templates' folder
-    with open(os.path.join("templates", "About.html"), "r") as file:
-        about_html = file.read()
-    st.markdown(about_html, unsafe_allow_html=True)
 
-def prediction_form():
-    # Load the 'PredictionForm.html' from the 'templates' folder
-    with open(os.path.join("templates", "PredictionForm.html"), "r") as file:
-        prediction_form_html = file.read()
-    st.markdown(prediction_form_html, unsafe_allow_html=True)
+@app.route("/predict/", methods=["GET", "POST"])
+def predict():
+    if request.method == "POST":
+        Gender = request.form.get("Gender")
+        Married = request.form.get("Married")
+        Education = request.form.get("Education")
+        Self_Employed = request.form.get("Self_Employed")
+        ApplicantIncome = request.form.get("ApplicantIncome")
+        CoapplicantIncome = request.form.get("CoapplicantIncome")
+        LoanAmount = request.form.get("LoanAmount")
+        Loan_Amount_Term = request.form.get("Loan_Amount_Term")
+        Credit_History = request.form.get("Credit_History")
+        Property_Area = request.form.get("Property_Area")
+    prediction = utils.preprocessdata(
+        Gender,
+        Married,
+        Education,
+        Self_Employed,
+        ApplicantIncome,
+        CoapplicantIncome,
+        LoanAmount,
+        Loan_Amount_Term,
+        Credit_History,
+        Property_Area,
+    )
+    return render_template("predict.html", prediction=prediction)
 
-# Directly call the home function to display the home page
-home()
+
+if __name__ == "__main__":
+    app.run(debug=False)
